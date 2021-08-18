@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .forms import AccountForm, TransactionForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Account, Transaction
 from .forms import AccountForm, TransactionForm
 
 # Create your views here.
@@ -23,11 +23,11 @@ def create_account(request):
 
 
 def balance(request, pk):
-    account = get_object_or_404(Account, pk=pk)
+    account = get_object_or_404(Account, pk = pk)
     transactions = Transaction.Transactions.filter(account = pk)
     current_total = account.initial_deposit
     table_contents = { }
-    for i in transactions:
+    for t in transactions:
         if t.type == 'Deposit':
             current_total += t.amount
             table_contents.update({t: current_total})
